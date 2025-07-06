@@ -20,6 +20,25 @@
   ansible.builtin.include_tasks: http_proxy.yml
   when: proxy_env is defined
 
+- name: Create /etc/rancher/k3s directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  when: k3s_resolvconf_nameserver | length > 0
+
+- name: Create custom resolv.conf for k3s
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/rancher/k3s/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
+  when: k3s_resolvconf_nameserver | length > 0
+  notify: restart k3s-node
+
 - name: Configure the k3s service
   ansible.builtin.template:
     src: k3s.service.j2
