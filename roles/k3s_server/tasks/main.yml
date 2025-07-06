@@ -39,7 +39,6 @@
     group: root
     mode: "0644"
   when: k3s_resolvconf_nameserver | length > 0
-  notify: restart k3s
 
 - name: Deploy vip manifest
   ansible.builtin.include_tasks: vip.yml
