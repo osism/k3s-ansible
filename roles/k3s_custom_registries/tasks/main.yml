@@ -11,6 +11,6 @@
 - name: Insert registries into /etc/rancher/k3s/registries.yaml
   ansible.builtin.blockinfile:
     path: /etc/rancher/k3s/registries.yaml
-    block: "{{ custom_registries_yaml }}"
+    block: "{{ custom_registries_yaml | to_yaml(indent=2) }}"
     mode: "0600"
     create: true
