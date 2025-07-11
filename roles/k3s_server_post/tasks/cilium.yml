@@ -1,6 +1,8 @@
 ---
 - name: Prepare Cilium CLI on first master and deploy CNI
-  when: ansible_hostname == hostvars[groups[group_name_master | default('master')][0]]['ansible_hostname']
+  when:
+    - ansible_hostname == hostvars[groups[group_name_master | default('master')][0]]['ansible_hostname']
+    - cilium_cli | default(true) | bool
   run_once: true
   block:
     - name: Create tmp directory on first master
